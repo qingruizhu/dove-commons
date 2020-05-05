@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modules>
+        <module>shiro-core</module>
+        <module>shiro-server</module>
+    </modules>
+
+    <parent>
+        <groupId>com.dove</groupId>
+        <artifactId>dove-commons</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.dove.common</groupId>
+    <artifactId>dove-common-shiro</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>dove-common-shiro</name>
+    <packaging>pom</packaging>
+    <description>shiro for dove</description>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.dove.common</groupId>
+            <artifactId>dove-common-base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dove.common</groupId>
+            <artifactId>dove-common-jwt</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dove.common</groupId>
+            <artifactId>dove-common-redis</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!--shiro-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.spring.version}</version>
+        </dependency>
+
+        <!--        <dependency>-->
+        <!--            <groupId>com.dove.book</groupId>-->
+        <!--            <artifactId>book-bgd</artifactId>-->
+        <!--            <version>0.0.1-SNAPSHOT</version>-->
+        <!--        </dependency>-->
+        <!--druid-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba</groupId>-->
+        <!--            <artifactId>druid-spring-boot-starter</artifactId>-->
+        <!--        </dependency>-->
+
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.httpcomponents</groupId>-->
+        <!--            <artifactId>httpclient</artifactId>-->
+        <!--            <version>4.5.5</version>-->
+        <!--        </dependency>-->
+    </dependencies>
+
+</project>

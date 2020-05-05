@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.dove.common.base.config.WebMvcBaseConfig,\
+  com.dove.common.base.config.GlobalCorsConfig,\
+  com.dove.common.base.config.JacksonConfig,\
+  com.dove.common.base.intercepter.SerialNumFilter
