@@ -9,6 +9,8 @@
         <module>dove-common-jwt</module>
         <module>dove-common-shiro</module>
         <module>dove-common-swagger</module>
+        <module>dove-common-async</module>
+        <module>dove-common-generate</module>
     </modules>
 
     <parent>

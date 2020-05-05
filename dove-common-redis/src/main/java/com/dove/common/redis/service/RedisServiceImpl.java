@@ -18,6 +18,7 @@ public class RedisServiceImpl implements RedisService {
     public boolean set(String key, Object value) {
         try {
             redisTemplate.opsForValue().set(key, value);
+            LOGGER.debug("【{}】存入redis", key);
             return true;
         } catch (Exception e) {
             LOGGER.error("【{}】存入redis失败", key, e);
@@ -29,6 +30,7 @@ public class RedisServiceImpl implements RedisService {
     public boolean set(String key, Object value, long expire) {
         try {
             redisTemplate.opsForValue().set(key, value, expire, TimeUnit.SECONDS);
+            LOGGER.debug("【{}】存入redis", key);
             return true;
         } catch (Exception e) {
             LOGGER.error("【{}】存入redis失败", key, e);

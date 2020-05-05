@@ -14,8 +14,8 @@ public class TreeNodeUtil {
      */
     public static List<? extends Node> convertTree(List<? extends Node> all) {
         List<Node> nodes = all.stream()
-                .filter((node -> null == node.getParentId()
-                        || 0 == node.getParentId()))//确定根结点
+                .filter((node -> null == node.getNodeParentId()
+                        || 0 == node.getNodeParentId()))//确定根结点
                 .map(fatherNode -> seekChildren(fatherNode, all))
                 .collect(Collectors.toList());
         return nodes;
@@ -37,7 +37,7 @@ public class TreeNodeUtil {
     private static Node seekChildren(Node fatherNode, List<? extends Node> all) {
         Node tmp = fatherNode;
         List<Node> children = all.stream()
-                .filter(node -> fatherNode.getId() == node.getParentId())
+                .filter(node -> fatherNode.getNodeId() == node.getNodeParentId())
                 .map(node -> seekChildren(node, all))
                 .collect(Collectors.toList());
         tmp.setChildren(children);
@@ -55,9 +55,9 @@ public class TreeNodeUtil {
 
 
     public interface Node<T> {
-        public Long getId();
+        public Long getNodeId();
 
-        public Long getParentId();
+        public Long getNodeParentId();
 
         public List<T> getChildren();
 
