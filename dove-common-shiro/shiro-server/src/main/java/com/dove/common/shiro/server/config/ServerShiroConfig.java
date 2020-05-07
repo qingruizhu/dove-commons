@@ -7,6 +7,7 @@ import com.dove.common.shiro.server.realm.UserNameShiroRealm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,13 +18,14 @@ import java.util.Arrays;
  * shiro配置类
  */
 @Configuration
+//@EnableAutoConfiguration
 public class ServerShiroConfig {
 
 
     /**
      * 设置 SecurityManager
      */
-    @Bean
+    @Bean("securityManager")
     @Qualifier("defaultWebSecurityManager")
     public SecurityManager securityManager(
             DefaultWebSecurityManager defaultWebSecurityManager,

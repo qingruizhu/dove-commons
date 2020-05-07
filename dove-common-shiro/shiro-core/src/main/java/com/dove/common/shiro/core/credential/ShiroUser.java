@@ -11,6 +11,7 @@ public class ShiroUser {
     private Long id;
     private String username;
     private String password;
+    private String phone;
     private String pwdSalt;
     private Set<String> roles;
     private Set<String> permissions;
@@ -38,6 +39,14 @@ public class ShiroUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getPwdSalt() {

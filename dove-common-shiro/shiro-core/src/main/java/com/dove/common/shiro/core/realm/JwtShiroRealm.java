@@ -29,7 +29,7 @@ import java.util.Set;
 public class JwtShiroRealm extends AuthorizingRealm {
 
     @Resource
-    private IUserShiroService userService;
+    private IUserShiroService userShiroService;
     @Autowired
     RedisService redisService;
     @Autowired
@@ -55,7 +55,7 @@ public class JwtShiroRealm extends AuthorizingRealm {
         String username = JwtTokenUtil.getSubject(token);
         ShiroUser shiroUser;
         shiroUser = (ShiroUser) redisService.getObj(RedisKeyShiro.user(username));
-        if (null == shiroUser) shiroUser = userService.getUserInfo(username);
+        if (null == shiroUser) shiroUser = userShiroService.getUserInfo(username);
         if (null == shiroUser) throw new AuthenticationException("该用户不存在");
         // 先验证该token是否过期
         if (!jwtTokenUtil.verify(token, username)) throw new AuthenticationException("token已过期");
@@ -76,10 +76,10 @@ public class JwtShiroRealm extends AuthorizingRealm {
         Set<String> permissions = user.getPermissions();
         if (CollectionUtils.isEmpty(roles) || CollectionUtils.isEmpty(permissions)) {
             if (CollectionUtils.isEmpty(roles)) {
-                roles = userService.getUserRoles(user.getId());
+                roles = userShiroService.getUserRoles(user.getId());
             }
             if (CollectionUtils.isEmpty(permissions)) {
-                permissions = userService.getUserPermissions(user.getId());
+                permissions = userShiroService.getUserPermissions(user.getId());
             }
             if (roles != null || permissions != null) {
                 if (roles != null) {

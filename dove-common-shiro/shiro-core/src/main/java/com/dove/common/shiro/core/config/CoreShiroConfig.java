@@ -11,6 +11,7 @@ import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
@@ -18,7 +19,6 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
@@ -38,7 +38,8 @@ public class CoreShiroConfig {
 
     @Value("${shiro.jwt.secret:cWluZ3J1aXpodQ==}")//默认"qingruizhu"
     private String secret;
-    @Value("${shiro.jwt.expiration:600}")//默认10分钟
+    //    @Value("${shiro.jwt.expiration:600}")//默认10分钟
+    @Value("${shiro.jwt.expiration:1800}")
     private Long expiration;
     @Value("#{'${shiro.anon.path:/test/**}'.split(',')}")
     private Set<String> excludePattern;
@@ -154,5 +155,13 @@ public class CoreShiroConfig {
         return subjectDAO;
     }
 
-
+    /**
+     * 开启aop注解支持,如: {@link org.apache.shiro.authz.annotation.RequiresPermissions}
+     */
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
 }
