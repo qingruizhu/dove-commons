@@ -1,6 +1,7 @@
 package com.dove.common.base.advice;
 
-import com.dove.common.base.intercepter.CommonResultIntercepter;
+import com.dove.common.base.annotation.CommonResultAnnon;
+import com.dove.common.base.enm.NeedCommonResult;
 import com.dove.common.base.vo.CommonResult;
 import com.dove.common.util.holder.ThreadLocalKey;
 import com.dove.common.util.holder.ThreadLocalMap;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
+import static com.dove.common.core.enm.SysErrorEnum.SYSTEM_ERROR_RESPONSE_NULL;
+
 
 /**
  * @Description: 全局响应处理器
@@ -31,26 +34,61 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
     private static String LOGO_RESPONSE_PREFIX = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>----------返回报文------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n    ####         ####\n   #   #        #   #\n  #####        #####\n #            #\n#            #\n\n";
     private static String LOGO_RESPONSE_SUFFIX = "\n\n      #        #\n######################\n#         #          #\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------END-------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<";
 
+    public static String I_AM_OPENFEIGN = "I_AM_OPENFEIGN_REQUESTER";
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
+        if (openFeignRequest()) return false;
         Method method = methodParameter.getMethod();
         Class<?> returnType = method.getReturnType();
         //String和CommonResult不做处理
         if (returnType == String.class || returnType == CommonResult.class) {
             return false;
         }
+        //方法上的注解
+        if (method.isAnnotationPresent(CommonResultAnnon.class)) {
+            CommonResultAnnon annotation = method.getAnnotation(CommonResultAnnon.class);
+            return annotation.use();
+        }
+        //controller上的注解
+        Class<?> controller = method.getDeclaringClass();
+        if (controller.isAnnotationPresent(CommonResultAnnon.class)) {
+            CommonResultAnnon annotation = controller.getAnnotation(CommonResultAnnon.class);
+            return annotation.use();
+        }
+        return false;
+//        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        HttpServletRequest request = requestAttributes.getRequest();
+//        Boolean responseResultUsed = (Boolean) request.getAttribute(CommonResultIntercepter.RESPONSE_RESULT_ANNOTATION);
+//        return null == responseResultUsed ? false : responseResultUsed;
+
+    }
+
+    private boolean openFeignRequest() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
-        Boolean responseResultUsed = (Boolean) request.getAttribute(CommonResultIntercepter.RESPONSE_RESULT_ANNOTATION);
-        return null == responseResultUsed ? false : responseResultUsed;
+        String resultHead = request.getHeader(I_AM_OPENFEIGN);
+        if (NeedCommonResult.NO.name().equals(resultHead)) return true;
+        return false;
     }
+
 
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        CommonResult<Object> result = CommonResult.success(o);
         Object snm = ThreadLocalMap.get(ThreadLocalKey.SERIAL_NUMBER.name());
         StringBuilder sb = new StringBuilder(snm.toString());
+        if (null == o || "".equals(o)) {
+            sb.append(" : ");
+            sb.append(SYSTEM_ERROR_RESPONSE_NULL.getMessage());
+            logger.error(sb.toString());
+            return CommonResult.failed(SYSTEM_ERROR_RESPONSE_NULL);
+        }
+        Object result;
+        if (o instanceof CommonResult) {
+            result = o;
+        } else {
+            result = CommonResult.success(o);
+        }
         sb.append(LOGO_RESPONSE_PREFIX);
         logger.info(sb.append(result.toString()).append(LOGO_RESPONSE_SUFFIX).toString());
         return result;

@@ -1,6 +1,7 @@
 package com.dove.common.shiro.core.filter;
 
 import cn.hutool.json.JSONUtil;
+import com.dove.common.base.enm.NeedCommonResult;
 import com.dove.common.base.vo.CommonResult;
 import com.dove.common.jwt.util.JwtTokenUtil;
 import com.dove.common.redis.service.RedisService;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.dove.common.base.advice.GlobalResponseAdvice.I_AM_OPENFEIGN;
 import static com.dove.common.shiro.core.enm.ShiroErrorEnum.AUTHEN_ERROR_TOKEN;
 
 
@@ -117,6 +119,7 @@ public class JwtAuthenFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+        if (openFeignRequest(request)) return true; // openfeign调用不刷新token
         if (token instanceof JWTToken) {
             JWTToken jwtToken = (JWTToken) token;
             String oldToken = jwtToken.getToken();
@@ -165,13 +168,22 @@ public class JwtAuthenFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         log.error("token 校验失败");
+        if (openFeignRequest(servletRequest)) return false;
         HttpServletResponse httpResponse = WebUtils.toHttp(servletResponse);
         httpResponse.setCharacterEncoding("UTF-8");
         httpResponse.setContentType("application/json;charset=UTF-8");
 //        httpResponse.setStatus(HttpStatus.SC_NON_AUTHORITATIVE_INFORMATION);
-        fillCorsHeader(WebUtils.toHttp(servletRequest), httpResponse);
-        CommonResult failed = CommonResult.failed(AUTHEN_ERROR_TOKEN.getCode(), AUTHEN_ERROR_TOKEN.getMessage());
+        CommonResult failed = CommonResult.failed(AUTHEN_ERROR_TOKEN);
         httpResponse.getWriter().print(JSONUtil.toJsonStr(failed));
+        return false;
+    }
+
+    private boolean openFeignRequest(ServletRequest servletRequest) {
+        HttpServletRequest httpServletRequest = WebUtils.toHttp(servletRequest);
+        String header = httpServletRequest.getHeader(I_AM_OPENFEIGN);
+        if (NeedCommonResult.NO.name().equals(header)) {
+            return true;
+        }
         return false;
     }
 

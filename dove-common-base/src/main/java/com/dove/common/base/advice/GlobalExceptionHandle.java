@@ -4,6 +4,7 @@ package com.dove.common.base.advice;
 import com.dove.common.base.exception.BaseException;
 import com.dove.common.base.vo.CommonResult;
 import com.dove.common.core.enm.SysErrorEnum;
+import com.dove.common.core.exception.DoveException;
 import com.dove.common.util.holder.ThreadLocalKey;
 import com.dove.common.util.holder.ThreadLocalMap;
 import org.slf4j.Logger;
@@ -31,6 +32,12 @@ public class GlobalExceptionHandle {
     public CommonResult handle(Exception e) {
         logger.error(this.snmAppendErrorMsg(SysErrorEnum.SYSTEM_ERROR.getMessage()), e);
         return CommonResult.failed();
+    }
+
+    @ExceptionHandler(DoveException.class)
+    public CommonResult handle(DoveException e) {
+        logger.error(this.snmAppendErrorMsg("【dove】异常--->>>{}"), e.getMessage());
+        return CommonResult.failed(e.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(BaseException.class)
