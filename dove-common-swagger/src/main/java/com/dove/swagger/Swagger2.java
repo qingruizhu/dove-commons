@@ -33,7 +33,7 @@ public class Swagger2 {
         return new ApiInfoBuilder()
                 //页面标题
 //                .title("Spring Boot 测试使用 Swagger2 构建RESTful API")
-                .title("API【飞鸽传书】")
+                .title("API【PPM】")
                 //创建人
 //                .contact(new Contact("qingruizhu", "http://www.baidu.com", "zqr99655@163.com"))
                 .contact(new Contact("qingruizhu", "https://mp.csdn.net/postedit/97941666", "zqr99655@163.com"))

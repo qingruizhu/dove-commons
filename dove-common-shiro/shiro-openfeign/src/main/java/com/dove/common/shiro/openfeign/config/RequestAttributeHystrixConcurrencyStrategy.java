@@ -28,8 +28,8 @@ import java.util.concurrent.TimeUnit;
  * @Auther: qingruizhu
  * @Date: 2020/5/8 20:34
  */
-@Component
-@ConditionalOnBean(FeignTokenConfig.class)
+//@Component
+//@ConditionalOnBean(FeignTokenConfig.class)
 public class RequestAttributeHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 

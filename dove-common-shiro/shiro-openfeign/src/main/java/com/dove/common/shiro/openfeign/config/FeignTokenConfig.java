@@ -6,7 +6,9 @@ import com.dove.common.base.enm.NeedCommonResult;
 import com.dove.common.shiro.core.filter.JwtAuthenFilter;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -40,5 +42,11 @@ public class FeignTokenConfig implements RequestInterceptor {
         }
         //openfeign标识
         requestTemplate.header(GlobalResponseAdvice.I_AM_OPENFEIGN, NeedCommonResult.NO.name());
+    }
+
+    @Bean
+    @ConditionalOnBean(FeignTokenConfig.class)
+    public RequestAttributeHystrixConcurrencyStrategy RequestAttributeHystrixConcurrencyStrategy() {
+        return new RequestAttributeHystrixConcurrencyStrategy();
     }
 }

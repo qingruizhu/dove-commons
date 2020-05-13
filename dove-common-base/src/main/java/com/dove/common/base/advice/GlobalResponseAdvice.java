@@ -20,8 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
-import static com.dove.common.core.enm.SysErrorEnum.SYSTEM_ERROR_RESPONSE_NULL;
-
 
 /**
  * @Description: 全局响应处理器
@@ -77,12 +75,6 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         Object snm = ThreadLocalMap.get(ThreadLocalKey.SERIAL_NUMBER.name());
         StringBuilder sb = new StringBuilder(snm.toString());
-        if (null == o || "".equals(o)) {
-            sb.append(" : ");
-            sb.append(SYSTEM_ERROR_RESPONSE_NULL.getMessage());
-            logger.error(sb.toString());
-            return CommonResult.failed(SYSTEM_ERROR_RESPONSE_NULL);
-        }
         Object result;
         if (o instanceof CommonResult) {
             result = o;
@@ -93,6 +85,5 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
         logger.info(sb.append(result.toString()).append(LOGO_RESPONSE_SUFFIX).toString());
         return result;
     }
-
 
 }
