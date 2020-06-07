@@ -119,6 +119,7 @@ public class CoreShiroConfig {
         chainDefinition.addPathDefinition("/configuration/ui", "anon");
 
         chainDefinition.addPathDefinition("/image/**", "anon");
+        chainDefinition.addPathDefinition("/images/**", "anon");
 //        chainDefinition.addPathDefinition("/admin/**", "noSessionCreation,authcToken,anyRole[admin,manager]"); //只允许admin或manager角色的用户访问
 //        chainDefinition.addPathDefinition("/article/*", "noSessionCreation,authcToken[permissive]");
         excludePattern.forEach((pattern) -> {

@@ -6,7 +6,6 @@ import com.dove.common.base.vo.CommonResult;
 import com.dove.common.jwt.util.JwtTokenUtil;
 import com.dove.common.redis.service.RedisService;
 import com.dove.common.shiro.core.token.JWTToken;
-import com.dove.common.shiro.core.util.RedisKeyShiro;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -119,28 +118,29 @@ public class JwtAuthenFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
-        if (openFeignRequest(request)) return true; // openfeign调用不刷新token
-        if (token instanceof JWTToken) {
-            JWTToken jwtToken = (JWTToken) token;
-            String oldToken = jwtToken.getToken();
-            boolean shouldRefresh = shouldRefreshToken(JwtTokenUtil.getIssuedAt(oldToken));
-            if (shouldRefresh) {
-                String username = JwtTokenUtil.getSubject(oldToken);
-                log.info("即将刷新【{}】的token", username);
-                String issueTimeKey = RedisKeyShiro.tokenIssueTime(username);
-                long issueTime = System.currentTimeMillis();
-                String newToken = jwtTokenUtil.sign(username, issueTime);
-                redisService.set(issueTimeKey, issueTime, jwtTokenUtil.getExpiration());
-                //重置缓存user的过期时间
-                if (redisService.exist(RedisKeyShiro.user(username))) {
-                    redisService.expire(RedisKeyShiro.user(username), jwtTokenUtil.getExpiration());
-                } else {
-                    redisService.set(RedisKeyShiro.user(username), subject.getPrincipal(), jwtTokenUtil.getExpiration());
-                }
-                WebUtils.toHttp(response).setHeader(AUTHORIZATION_HEADER, JWT_AUTHZSCHEME + " " + newToken);
-                log.info("刷新token成功");
-            }
-        }
+        //下面这段不再需要，服务端不再自动刷新token，由客户端主动调用token刷新接口
+//        if (openFeignRequest(request)) return true; // openfeign调用不刷新token
+//        if (token instanceof JWTToken) {
+//            JWTToken jwtToken = (JWTToken) token;
+//            String oldToken = jwtToken.getToken();
+//            boolean shouldRefresh = shouldRefreshToken(JwtTokenUtil.getIssuedAt(oldToken));
+//            if (shouldRefresh) {
+//                String username = JwtTokenUtil.getSubject(oldToken);
+//                log.info("即将刷新【{}】的token", username);
+//                String issueTimeKey = RedisKeyShiro.tokenIssueTime(username);
+//                long issueTime = System.currentTimeMillis();
+//                String newToken = jwtTokenUtil.sign(username, issueTime);
+//                redisService.set(issueTimeKey, issueTime, jwtTokenUtil.getExpiration());
+//                //重置缓存user的过期时间
+//                if (redisService.exist(RedisKeyShiro.user(username))) {
+//                    redisService.expire(RedisKeyShiro.user(username), jwtTokenUtil.getExpiration());
+//                } else {
+//                    redisService.set(RedisKeyShiro.user(username), subject.getPrincipal(), jwtTokenUtil.getExpiration());
+//                }
+//                WebUtils.toHttp(response).setHeader(AUTHORIZATION_HEADER, JWT_AUTHZSCHEME + " " + newToken);
+//                log.info("刷新token成功");
+//            }
+//        }
         return true;
     }
 
@@ -168,7 +168,7 @@ public class JwtAuthenFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         log.error("token 校验失败");
-        if (openFeignRequest(servletRequest)) return false;
+        if (openFeignRequest(servletRequest)) return false;//openfeign调用直接返回，不做统一返回 处理
         HttpServletResponse httpResponse = WebUtils.toHttp(servletResponse);
         httpResponse.setCharacterEncoding("UTF-8");
         httpResponse.setContentType("application/json;charset=UTF-8");

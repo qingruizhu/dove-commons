@@ -10,8 +10,12 @@ public enum SysErrorEnum implements IBaseEum {
     SYSTEM_ERROR(500, "系统内部错误"),
     SYSTEM_ERROR_REQUEST_PARAM_INVALIDATE(501, "非法参数"),
     SYSTEM_ERROR_REQUEST_PARAM_MISSING(502, "必输参数缺失"),
-    SYSTEM_ERROR_REQUEST_METHOD(503, "请求方式有误"),
-    SYSTEM_ERROR_RESPONSE_NULL(551, "响应数据为空"),
+    SYSTEM_ERROR_REQUEST_PARAM_TYPE(503, "参数类型不匹配"),
+    SYSTEM_ERROR_REQUEST_METHOD(504, "请求方式有误"),
+
+    SYSTEM_ERROR_FILE_UPLOAD(505, "上传文件失败"),
+
+
     _ERROR(777, "无码错误");;
 
 

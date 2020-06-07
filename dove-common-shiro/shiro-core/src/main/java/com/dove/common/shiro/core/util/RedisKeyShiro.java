@@ -15,7 +15,6 @@ public class RedisKeyShiro {
     private static String COLON = ":";
 
     public static String tokenIssueTime(String subject) {
-        long l = System.currentTimeMillis();
         StringBuffer sb = new StringBuffer(SHIRO_PREFIX_TOKEN_ISSUE_MILLI);
         sb.append(COLON);
         sb.append(subject);

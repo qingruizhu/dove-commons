@@ -16,6 +16,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -78,6 +80,13 @@ public class GlobalExceptionHandle {
         return CommonResult.failed(SysErrorEnum.SYSTEM_ERROR_REQUEST_PARAM_MISSING.getCode(), SysErrorEnum.SYSTEM_ERROR_REQUEST_PARAM_MISSING.getMessage() + "【" + parameterName + "】");
     }
 
+    //参数类型不匹配
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public CommonResult handle(MethodArgumentTypeMismatchException e) {
+        Class<?> requiredType = e.getRequiredType();
+        return CommonResult.failed(SysErrorEnum.SYSTEM_ERROR_REQUEST_PARAM_TYPE.getCode(), SysErrorEnum.SYSTEM_ERROR_REQUEST_PARAM_TYPE.getMessage() + ",需要类型【" + requiredType.getSimpleName() + "】");
+    }
+
     //参数较验不通过
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public CommonResult handle(MethodArgumentNotValidException e) {
@@ -100,5 +109,12 @@ public class GlobalExceptionHandle {
         return CommonResult.failed();
     }
 
+
+    //上传 文件 过大
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public CommonResult handle(MaxUploadSizeExceededException e) {
+        long maxUploadSize = e.getMaxUploadSize();
+        return CommonResult.failed(SysErrorEnum.SYSTEM_ERROR_FILE_UPLOAD.getCode(), SysErrorEnum.SYSTEM_ERROR_FILE_UPLOAD.getMessage() + ",fileSize >【" + maxUploadSize + "】");
+    }
 
 }
