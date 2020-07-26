@@ -104,7 +104,7 @@ public class GlobalExceptionHandle {
     @ExceptionHandler(ConstraintViolationException.class)
     public CommonResult handle(ConstraintViolationException e) {
         for (ConstraintViolation<?> s : e.getConstraintViolations()) {
-            return CommonResult.failed(SysErrorEnum.SYSTEM_ERROR_REQUEST_PARAM_INVALIDATE.getCode(), s.getInvalidValue() + " ❎<--- " + s.getMessage());
+            return CommonResult.failed(SysErrorEnum.SYSTEM_ERROR_REQUEST_PARAM_INVALIDATE.getCode(), s.getPropertyPath().toString() + " ---❎ " + s.getMessage());
         }
         return CommonResult.failed();
     }
