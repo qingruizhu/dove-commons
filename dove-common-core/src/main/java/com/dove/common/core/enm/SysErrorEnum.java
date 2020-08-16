@@ -6,6 +6,7 @@ package com.dove.common.core.enm;
  * @Date: 2020/4/8 13:25
  */
 public enum SysErrorEnum implements IBaseEum {
+    //
     SUCCESS(200, "成功"),
     SYSTEM_ERROR(500, "系统内部错误"),
     SYSTEM_ERROR_REQUEST_PARAM_INVALIDATE(501, "非法参数"),

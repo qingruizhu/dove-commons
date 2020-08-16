@@ -1,4 +1,5 @@
-package com.dove.common.util.page;
+package com.dove.book.bgd.page;
+
 
 import com.github.pagehelper.PageInfo;
 import org.springframework.data.domain.Page;
