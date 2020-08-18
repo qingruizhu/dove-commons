@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+            com.dove.common.oauth2.server.InitOauthConfig

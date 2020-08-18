@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+    <modules>
+        <module>oauth2-base</module>
+        <module>auth-server</module>
+        <module>resource-server</module>
+    </modules>
+
     <parent>
         <groupId>com.dove</groupId>
         <artifactId>dove-commons</artifactId>
@@ -13,6 +19,7 @@
     <artifactId>dove-common-oauth2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>dove-common-oauth2</name>
+    <packaging>pom</packaging>
     <description>oauth2 of common</description>
 
     <dependencies>
