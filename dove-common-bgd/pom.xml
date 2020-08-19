@@ -9,15 +9,11 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.dove.book</groupId>
+    <groupId>com.dove.common</groupId>
     <artifactId>dove-common-bgd</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>dove-common-bgd</name>
     <description>代码生成器</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <dependencies>
 
