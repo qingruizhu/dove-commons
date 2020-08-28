@@ -23,8 +23,8 @@ public class DefaultJwtTokenConvert extends JwtAccessTokenConverter {
             if (principal instanceof OauthUser) {
                 OauthUser oauthUser = (OauthUser) principal;
                 Map<String, Object> info = new HashMap<>();
-                info.put("user_id", oauthUser.getId());
-                info.put("user_mobile", oauthUser.getMobile());
+                info.put("user_id", oauthUser.getUser_id());
+                info.put("user_mobile", oauthUser.getUser_mobile());
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
             }
         }

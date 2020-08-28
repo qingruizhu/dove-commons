@@ -52,6 +52,7 @@ public class DefaultResourceServerConfig extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
+                .formLogin().disable()
                 .headers().frameOptions().disable()
                 .and()
                 .csrf().disable()
