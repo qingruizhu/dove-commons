@@ -1,5 +1,8 @@
 package com.dove.common.oauth2.server.config;
 
+import com.common.dove.oauth2.base.handler.DoveAccessDeniedHandler;
+import com.common.dove.oauth2.base.handler.DoveAuthExceptionEntryPoint;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @ConditionalOnMissingBean(WebSecurityConfigurer.class)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Value("#{'${dove.oauth2.ignore.urls:/test/**}'.split(',')}")
+    private String[] ignoreUrls;
 
     /**
      * 密码加密工具类，它可以实现不可逆的加密。
@@ -44,8 +50,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .formLogin().disable()
+//                .authorizeRequests().antMatchers("/**").permitAll();
+
         http
                 .formLogin().disable()
-                .authorizeRequests().antMatchers("/**").permitAll();
+                .headers().frameOptions().disable()
+                .and()
+                .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint((authExceptionEntryPoint()))
+                .accessDeniedHandler(accessDeniedHandler())
+                .and()
+                .authorizeRequests().antMatchers(
+                "/oauth/**",
+                "/druid/**", "/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/api/applications")
+                .permitAll()
+                .and()
+                .authorizeRequests().antMatchers(ignoreUrls).permitAll()
+                .anyRequest().authenticated();
+    }
+
+
+    @Bean
+    public DoveAuthExceptionEntryPoint authExceptionEntryPoint() {
+        return new DoveAuthExceptionEntryPoint();
+    }
+
+    @Bean
+    public DoveAccessDeniedHandler accessDeniedHandler() {
+        return new DoveAccessDeniedHandler();
     }
 }

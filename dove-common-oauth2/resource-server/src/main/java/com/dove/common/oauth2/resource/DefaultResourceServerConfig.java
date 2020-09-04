@@ -6,6 +6,8 @@ package com.dove.common.oauth2.resource;
  * 和 @EnableWebSecurity的作用类似。
  */
 
+import com.common.dove.oauth2.base.handler.DoveAccessDeniedHandler;
+import com.common.dove.oauth2.base.handler.DoveAuthExceptionEntryPoint;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
