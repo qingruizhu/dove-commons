@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.jwt.crypto.sign.MacSigner;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -25,7 +26,13 @@ public class JwtTokenStoreConfig {
 
     @Bean
     public TokenStore jwtTokenStore() {
+//        MacSigner macSigner = new MacSigner(jwtTokenSecret);
+//        jwtAccessTokenConverter.setSigningKey(jwtTokenSecret);
+//        jwtAccessTokenConverter.setSigner(macSigner);
+//        jwtAccessTokenConverter.setVerifier(macSigner);
         jwtAccessTokenConverter.setSigningKey(jwtTokenSecret);
+        //非对称 使用 MacSigner，在这里需输入 MacSigner 对象，负责不能解析token报错：Cannot convert access token to JSON;
+        jwtAccessTokenConverter.setVerifier(new MacSigner(jwtTokenSecret));
         return new JwtTokenStore(jwtAccessTokenConverter);
     }
 
