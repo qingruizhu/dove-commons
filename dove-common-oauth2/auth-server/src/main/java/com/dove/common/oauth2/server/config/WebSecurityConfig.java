@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,15 +64,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint((authExceptionEntryPoint()))
                 .accessDeniedHandler(accessDeniedHandler())
                 .and()
-                .authorizeRequests().antMatchers(
-                "/oauth/**",
-                "/druid/**", "/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/api/applications")
-                .permitAll()
-                .and()
-                .authorizeRequests().antMatchers(ignoreUrls).permitAll()
+                .authorizeRequests()
+//                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
+//                        "/swagger-resources", "/swagger-resources/configuration/security",
+//                        "/swagger-ui.html", "/css/**", "/js/**", "/images/**", "/webjars/**", "**/favicon.ico", "/index").permitAll()
+                .antMatchers(ignoreUrls).permitAll()
                 .anyRequest().authenticated();
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers(
+                        "/v2/api-docs", "/swagger-resources/configuration/ui",
+                        "/swagger-resources", "/swagger-resources/configuration/security",
+                        "/swagger-ui.html", "/css/**", "/js/**", "/images/**", "/webjars/**", "**/favicon.ico", "/index");
+
+    }
 
     @Bean
     public DoveAuthExceptionEntryPoint authExceptionEntryPoint() {

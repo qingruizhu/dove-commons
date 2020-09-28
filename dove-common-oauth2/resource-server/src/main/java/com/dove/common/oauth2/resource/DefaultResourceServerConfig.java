@@ -62,9 +62,11 @@ public class DefaultResourceServerConfig extends ResourceServerConfigurerAdapter
                 .authenticationEntryPoint((authExceptionEntryPoint()))
                 .accessDeniedHandler(accessDeniedHandler())
                 .and()
-                .authorizeRequests().antMatchers("/druid/**", "/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/api/applications").permitAll()
-                .and()
-                .authorizeRequests().antMatchers(ignoreUrls).permitAll()
+                .authorizeRequests()
+                .antMatchers("/druid/**", "/v2/api-docs", "/swagger-resources/configuration/ui",
+                        "/swagger-resources", "/swagger-resources/configuration/security",
+                        "/swagger-ui.html", "/css/**", "/js/**", "/images/**", "/webjars/**", "**/favicon.ico", "/index").permitAll()
+                .antMatchers(ignoreUrls).permitAll()
                 .anyRequest().authenticated();
     }
 
