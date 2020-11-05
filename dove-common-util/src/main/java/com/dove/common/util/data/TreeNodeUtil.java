@@ -37,7 +37,7 @@ public class TreeNodeUtil {
     private static Node seekChildren(Node fatherNode, List<? extends Node> all) {
         Node tmp = fatherNode;
         List<Node> children = all.stream()
-                .filter(node -> fatherNode.getNodeId() == node.getNodeParentId())
+                .filter(node -> fatherNode.getNodeId().equals(node.getNodeParentId()))
                 .map(node -> seekChildren(node, all))
                 .collect(Collectors.toList());
         tmp.setChildren(children);
