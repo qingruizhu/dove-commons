@@ -28,9 +28,10 @@ import java.lang.reflect.Method;
  */
 @RestControllerAdvice
 public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
+
     Logger logger = LoggerFactory.getLogger(GlobalResponseAdvice.class);
-    private static String LOGO_RESPONSE_PREFIX = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>----------返回报文------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n    ####         ####\n   #   #        #   #\n  #####        #####\n #            #\n#            #\n\n";
-    private static String LOGO_RESPONSE_SUFFIX = "\n\n      #        #\n######################\n#         #          #\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------END-------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<";
+    private static String LOGO_RESPONSE_PREFIX = "\n👇👇👇👇  返回报文 👇👇👇    \n \n";
+    private static String LOGO_RESPONSE_SUFFIX = "\n \n👆👆👆👆   END  👆👆👆    ️️\n";
 
     public static String I_AM_OPENFEIGN = "I_AM_OPENFEIGN_REQUESTER";
 
