@@ -11,11 +11,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 @Configuration
-@ConditionalOnMissingBean(CorsFilter.class)
+@ConditionalOnMissingBean(CorsWebFilter.class)
 public class GlobalCorsConfig {
 
 //    @Bean
