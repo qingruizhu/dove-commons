@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -223,6 +224,116 @@ public class RedisServiceImpl implements RedisService {
             LOGGER.error("decr redis for hash【{}】of hashKey【{}】 error", key, hashKey, e);
             return null;
         }
+    }
+
+    @Override
+    public List<Object> lRange(String key, long start, long end) {
+        try {
+            return redisTemplate.opsForList().range(key, start, end);
+        } catch (Exception e) {
+            LOGGER.error("range redis for list【{} error", key, e);
+            return null;
+        }
+    }
+
+    @Override
+    public Long lSize(String key) {
+        try {
+            return redisTemplate.opsForList().size(key);
+        } catch (Exception e) {
+            LOGGER.error("size redis for list【{} error", key, e);
+            return null;
+        }
+    }
+
+    @Override
+    public Object lIndex(String key, long index) {
+        try {
+            return redisTemplate.opsForList().index(key, index);
+        } catch (Exception e) {
+            LOGGER.error("index【{}】 redis for list【{}】 error", index, key, e);
+            return null;
+        }
+
+    }
+
+    @Override
+    public Long lPush(String key, Object value) {
+        try {
+            return redisTemplate.opsForList().rightPush(key, value);
+        } catch (Exception e) {
+            LOGGER.error("rightPush redis for list【{}】 error", key, e);
+            return null;
+        }
+    }
+
+    @Override
+    public Long lPush(String key, Object value, long time) {
+        try {
+            Long index = redisTemplate.opsForList().rightPush(key, value);
+            expire(key, time);
+            return index;
+        } catch (Exception e) {
+            LOGGER.error("rightPush redis for list【{}】 error", key, e);
+            return null;
+        }
+
+    }
+
+    @Override
+    public Long lPushAll(String key, Object... values) {
+        try {
+            return redisTemplate.opsForList().rightPushAll(key, values);
+        } catch (Exception e) {
+            LOGGER.error("rightPushAll redis for list【{}】 error", key, e);
+            return null;
+        }
+
+    }
+
+    @Override
+    public Long lPushAll(String key, Long time, Object... values) {
+        try {
+            Long count = redisTemplate.opsForList().rightPushAll(key, values);
+            expire(key, time);
+            return count;
+        } catch (Exception e) {
+            LOGGER.error("rightPushAll redis for list【{}】expire【{}】 error", key, time, e);
+            return null;
+        }
+
+    }
+
+    @Override
+    public Object lPop(String key) {
+        try {
+            return redisTemplate.opsForList().leftPop(key);
+        } catch (Exception e) {
+            LOGGER.error("leftPop redis for list【{}】 error", key, e);
+            return null;
+        }
+    }
+
+    @Override
+    public Long lRemove(String key, long count, Object value) {
+        try {
+            return redisTemplate.opsForList().remove(key, count, value);
+        } catch (Exception e) {
+            LOGGER.error("remove redis for list【{}】 count【{}】 error", key, count, e);
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean trim(String key, Integer start, Integer end) {
+        try {
+            redisTemplate.opsForList().trim(key, start, end);
+            return true;
+        } catch (Exception e) {
+            LOGGER.error("trim redis for list【{}】 start【{}】end【{}】 error", key, start, end, e);
+            return false;
+        }
+
     }
 
 
