@@ -2,6 +2,7 @@ package com.dove.common.redis.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 对象和数组都以json形式进行存储
@@ -20,6 +21,10 @@ public interface RedisService {
      * 是否存在key
      */
     Boolean exist(String key);
+    /**
+     *  以 pattern* 的所有key
+     */
+    Set<String> keysLike(String pattern);
 
     /**
      * 获取数据

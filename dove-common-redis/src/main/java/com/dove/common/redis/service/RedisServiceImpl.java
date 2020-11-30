@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
@@ -50,7 +51,16 @@ public class RedisServiceImpl implements RedisService {
             LOGGER.error("判断redis中是否存在【{}】失败", key, e);
             return false;
         }
+    }
 
+    @Override
+    public Set<String> keysLike(String pattern) {
+        try {
+            return redisTemplate.keys(pattern);
+        } catch (Exception e) {
+            LOGGER.error("查询redis中以【{}】为前缀的所有key失败", pattern, e);
+            return null;
+        }
     }
 
     @Override
