@@ -4,13 +4,16 @@ package com.dove.book.bgd.page;
 import com.github.pagehelper.PageInfo;
 import org.springframework.data.domain.Page;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 分页数据封装类
  */
-public class CommonPage<T> {
+public class CommonPage<T> implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer pageNum;
     private Integer pageSize;
     private Integer totalPage;
