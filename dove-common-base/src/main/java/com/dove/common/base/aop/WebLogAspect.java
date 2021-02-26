@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.concurrent.Executor;
 
 
-@Component
+//@Component
 @Aspect
 public class WebLogAspect {
 
