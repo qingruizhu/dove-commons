@@ -12,6 +12,7 @@
         <module>dove-common-shiro</module>
         <module>dove-common-swagger</module>
         <module>dove-common-async</module>
+        <module>dove-common-mail</module>
     </modules>
 
     <parent>
