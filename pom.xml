@@ -58,7 +58,7 @@
         <jwt.auth0.version>3.2.0</jwt.auth0.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <slf4j.api.version>1.7.30</slf4j.api.version>
-        <shiro.spring.version>1.4.0</shiro.spring.version>
+        <shiro.spring.version>1.7.1</shiro.spring.version>
         <!--        <cloud.starer.openfeign>2.2.2.RELEASE</cloud.starer.openfeign>-->
     </properties>
     <dependencyManagement>
