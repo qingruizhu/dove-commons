@@ -51,7 +51,7 @@
         <springfox-swagger2-ui.version>2.9.2</springfox-swagger2-ui.version>
         <commons-lang.version>2.6</commons-lang.version>
         <pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
-        <pagehelper.version>5.1.8</pagehelper.version>
+        <pagehelper.version>5.3.1</pagehelper.version>
         <spring-data-commons.version>2.2.6.RELEASE</spring-data-commons.version>
         <hutool-all.version>4.6.2</hutool-all.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
